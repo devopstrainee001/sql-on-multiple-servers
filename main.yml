@@ -1,0 +1,5 @@
+- name: SQL Server
+  hosts: all
+  gather_facts : false
+  roles:
+    - sql-server-install

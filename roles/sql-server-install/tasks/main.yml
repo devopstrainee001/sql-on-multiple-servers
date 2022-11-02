@@ -1,0 +1,37 @@
+---
+- name: Install SQL server
+  win_chocolatey:
+    name: sql-server-2019
+    version: "{{ sql_version }}"
+    state: present
+  when: "inventory_hostname in groups['windows'] and '{{ operating_system }}' == 'Windows'"
+
+- name: provision SQL RDS instance
+  rds:
+    command: create
+    region: "{{ aws_region }}"
+    instance_name: new-database
+    db_engine: "{{ db_engine }}"
+    size: 50
+    instance_type: db.r5.large
+    license_model: license-included
+    username: "{{ username }}"
+    password: "{{ password }}"
+    tags:
+      Environment: testing
+      Application: cms
+  when: "inventory_hostname in groups['rds'] and '{{ operating_system }}' == 'AWS'"
+- name: install mssql-server repo (CentOS, RedHat)
+  get_url:
+    url: https://packages.microsoft.com/config/rhel/8/mssql-server-2019.repo
+    dest: /etc/yum.repos.d/mssql-server.repo
+  become: yes
+  become_user: root
+  when: "inventory_hostname in groups['linux'] and '{{ operating_system }}' == 'Linux'"
+- name: install mssql-server package
+  package:
+    name: mssql-server
+    state: latest
+  become: yes
+  become_user: root
+  when: "inventory_hostname in groups['linux'] and '{{ operating_system }}' == 'Linux'"
