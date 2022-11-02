@@ -11,5 +11,5 @@ sql_version: "15.0.2000.20210324"
 
 db_engine: "sqlserver-se"
 aws_region: "ap-south-1"
-username: "rohan"
-password: "kohli38383838"
+username: "username"
+password: "passwrd"
