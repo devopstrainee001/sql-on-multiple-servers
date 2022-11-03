@@ -1,7 +1,7 @@
 ---
 ### Universal
 
-operating_system: "Linux"
+operating_system: "AWS"
 
 ### Windows Variables
 
